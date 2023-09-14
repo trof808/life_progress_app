@@ -1,14 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.css';
 
-import NxWelcome from './nx-welcome';
-
 export function App() {
-  return (
-    <div>
-      <NxWelcome title="another-todo-app" />
-    </div>
-  );
+    return (
+        <div className='text-5xl'>
+            {/* Auth page */}
+            <div>
+
+            </div>
+        </div>
+    );
 }
 
 export default App;
