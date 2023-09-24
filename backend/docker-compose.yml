@@ -1,0 +1,27 @@
+# -compose.yml
+
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: uvicorn main:app --host 0.0.0.0
+    volumes:
+      - .:/app
+    ports:
+      - 8008:8000
+    environment:
+      - DATABASE_URL=postgresql://todo_app:todo_app@db:5432/todo_app
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=todo_app
+      - POSTGRES_PASSWORD=todo_app
+      - POSTGRES_DB=todo_app
+
+volumes:
+  postgres_data:
