@@ -2,18 +2,24 @@ from enum import Enum
 import databases
 import ormar
 import sqlalchemy
+from datetime import datetime
 
-from .config import settings
+from config import settings
 
 database = databases.Database(settings.db_url)
 metadata = sqlalchemy.MetaData()
+
+
+class DateFieldsMixins:
+    created_date: datetime = ormar.DateTime(default=datetime.now)
+    updated_date: datetime = ormar.DateTime(default=datetime.now)
 
 
 class StatusEnum(Enum):
     backlog = 'Backlog'
     in_progress = 'In Progress'
     removed = 'Removed'
-    hold = 'Hol'
+    hold = 'Hold'
     done = 'Done'
 
 
@@ -32,18 +38,20 @@ class User(ormar.Model):
     active: bool = ormar.Boolean(default=True, nullable=False)
 
 
-class Goal(ormar.Model):
+class Goal(ormar.Model, DateFieldsMixins):
     class Meta(BaseMeta):
         tablename = "goal"
 
     id: int = ormar.Integer(primary_key=True)
     title: str = ormar.Text()
-    finish_date = ormar.DateTime()
-    status = ormar.String(max_length=100, choices=list(StatusEnum))
+    description: str = ormar.Text(default='')
+    finish_date = ormar.DateTime(default=None)
+    status = ormar.String(max_length=100, choices=list(
+        StatusEnum), default=StatusEnum.backlog)
 # user = ormar.ForeignKey(User)
 
 
-class Stream(ormar.Model):
+class Stream(ormar.Model, DateFieldsMixins):
     class Meta(BaseMeta):
         tablename = "stream"
 
@@ -56,7 +64,7 @@ class Stream(ormar.Model):
 # user = ormar.ForeignKey(User)
 
 
-class Task(ormar.Model):
+class Task(ormar.Model, DateFieldsMixins):
     class Meta(BaseMeta):
         tablename = "task"
 

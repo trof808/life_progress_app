@@ -12,6 +12,7 @@ services:
       - 8008:8000
     environment:
       - DATABASE_URL=postgresql://todo_app:todo_app@db:5432/todo_app
+
   db:
     image: postgres:15-alpine
     volumes:

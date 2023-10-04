@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .db import database, Stream
+from db import database, Stream
 
 app = FastAPI()
 
